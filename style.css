@@ -1,10 +1,8 @@
 :root {
-    --primary-color: #FF0055; /* Vibrant Red/Pink */
-    --accent-color: #00E5FF; /* Cyan */
-    --bg-color: #1a1a2e; /* Deep Blue/Purple */
-    --glass-bg: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --font-main: 'Outfit', sans-serif;
+    --primary-color: #FF0055;
+    --accent-color: #00E5FF;
+    --bg-color: #1a1a2e;
+    --font-main: 'Press Start 2P', cursive;
 }
 
 * {
@@ -13,6 +11,8 @@
     box-sizing: border-box;
     user-select: none;
     -webkit-user-select: none;
+    touch-action: none;
+    /* Prevent default touch actions like scroll/zoom */
 }
 
 body {
@@ -20,6 +20,8 @@ body {
     font-family: var(--font-main);
     overflow: hidden;
     height: 100vh;
+    height: 100dvh;
+    /* Mobile viewport fix */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -30,17 +32,28 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
-    max-width: 600px; /* Mobile-first aspect ratio limit on desktop */
-    aspect-ratio: 9/16;
+    /* Maintain 9:16 aspect ratio roughly, but max out on mobile */
+    max-width: 100%;
+    max-height: 100%;
+
     background: #000;
-    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     overflow: hidden;
+
+    /* Pixel Art Scaling */
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
 }
 
+/* Desktop Constraint */
 @media (min-width: 600px) {
     #game-container {
-        border-radius: 20px;
-        height: 90vh;
+        max-width: 45vh;
+        /* Constrain width based on height to keep phone shape */
+        aspect-ratio: 9/16;
+        border-radius: 4px;
+        /* Slight rounded corners */
+        border: 4px solid #333;
     }
 }
 
@@ -48,6 +61,8 @@ canvas {
     display: block;
     width: 100%;
     height: 100%;
+    /* Ensure canvas itself is pixelated */
+    image-rendering: pixelated;
 }
 
 #ui-layer {
@@ -56,7 +71,8 @@ canvas {
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* Let clicks pass through to canvas generally */
+    pointer-events: none;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 .screen {
@@ -67,8 +83,9 @@ canvas {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: opacity 0.3s ease;
-    pointer-events: auto; /* Screen overlays grab input */
+    transition: opacity 0.2s steps(4);
+    /* Stepped transition for retro feel */
+    pointer-events: auto;
 }
 
 .hidden {
@@ -82,85 +99,93 @@ canvas {
 
 /* Title Screen */
 .title {
-    font-size: 4rem;
-    font-weight: 900;
-    line-height: 0.9;
+    font-size: 2rem;
+    line-height: 1.2;
     text-align: center;
-    text-shadow: 0 0 20px var(--primary-color);
-    transform: rotate(-5deg);
+    color: white;
+    text-shadow: 4px 4px 0px var(--primary-color);
+    margin-bottom: 2rem;
 }
 
 .title .highlight {
-    color: var(--primary-color);
-    font-size: 5rem;
+    color: var(--accent-color);
+    font-size: 2.5rem;
+    text-shadow: 4px 4px 0px #005f99;
 }
 
 .subtitle {
-    margin-top: 2rem;
-    font-size: 1.5rem;
-    letter-spacing: 0.2em;
-    animation: pulse 1.5s infinite;
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    animation: blink 1s step-end infinite;
 }
 
 .version {
     position: absolute;
     bottom: 20px;
-    font-size: 0.8rem;
-    opacity: 0.5;
+    font-size: 0.5rem;
+    opacity: 0.7;
 }
 
 /* HUD */
 #hud {
-    justify-content: flex-start;
+    justify-content: space-between;
+    align-items: flex-start;
     padding: 20px;
     flex-direction: row;
-    justify-content: space-between;
 }
 
-.score-container, .combo-container {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--glass-border);
-    padding: 10px 20px;
-    border-radius: 15px;
+.score-container,
+.combo-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-shadow: 2px 2px 0 #000;
 }
 
 .label {
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    opacity: 0.8;
+    font-size: 0.5rem;
+    color: #aaa;
+    margin-bottom: 4px;
 }
 
-#score-display, #combo-display {
-    font-size: 1.5rem;
-    font-weight: 700;
+#score-display,
+#combo-display {
+    font-size: 1rem;
+    color: white;
+}
+
+#combo-display {
+    color: var(--accent-color);
 }
 
 /* Animations */
-@keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.95); }
+@keyframes blink {
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
 }
 
 /* Button Styling */
 button {
     background: var(--primary-color);
-    border: none;
-    padding: 15px 40px;
-    font-size: 1.5rem;
+    border: 4px solid white;
+    box-shadow: 4px 4px 0px black;
+    padding: 15px 30px;
+    font-size: 1rem;
     color: white;
     font-family: var(--font-main);
-    font-weight: 700;
-    border-radius: 50px;
     margin-top: 20px;
     cursor: pointer;
-    box-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
-    transition: transform 0.1s;
 }
 
 button:active {
-    transform: scale(0.95);
+    transform: translate(4px, 4px);
+    box-shadow: none;
 }

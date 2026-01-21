@@ -1,6 +1,6 @@
 /**
  * REFUEL IT UP - Main Game Logic
- * Ver01.18.18.15日1
+ * Ver01.18.18.16日1
  */
 
 // --- Constants & Config ---
@@ -196,30 +196,29 @@ class Renderer {
     }
 
     resize() {
-        // Determine parent container size
+        // Internal "Virtual" Resolution for Pixel Art
+        this.virtualWidth = 180;
+        this.virtualHeight = 320;
+
+        // Helper to center the content if aspect ratio differs
         const container = this.canvas.parentElement;
-        this.width = container.clientWidth;
-        this.height = container.clientHeight;
+        const width = container.clientWidth;
+        const height = container.clientHeight;
 
-        // Handle High DPI displays
-        const dpr = window.devicePixelRatio || 1;
-        this.canvas.width = this.width * dpr;
-        this.canvas.height = this.height * dpr;
+        // We set the canvas INTENAL resolution to low-res
+        this.canvas.width = this.virtualWidth;
+        this.canvas.height = this.virtualHeight;
 
-        this.ctx.scale(dpr, dpr);
+        // The CSS will scale it up. 
+        // We don't need to scale context because we want to draw in low-res coordinates (0-180, 0-320)
+        this.width = this.virtualWidth;
+        this.height = this.virtualHeight;
 
-        // Smooth drawing
-        this.ctx.imageSmoothingEnabled = true;
+        this.ctx.imageSmoothingEnabled = false; // Critical for pixel art
     }
 
     clear() {
-        this.ctx.clearRect(0, 0, this.width, this.height);
-
-        // Draw background gradient (temp)
-        const grad = this.ctx.createLinearGradient(0, 0, 0, this.height);
-        grad.addColorStop(0, '#2a2a4e');
-        grad.addColorStop(1, '#1a1a2e');
-        this.ctx.fillStyle = grad;
+        this.ctx.fillStyle = '#1a1a2e'; // Solid bg for now
         this.ctx.fillRect(0, 0, this.width, this.height);
     }
 
@@ -300,23 +299,22 @@ class Renderer {
 
         // Calculate pulse based on beat fraction
         const beatFraction = conductor.currentBeat % 1;
-        // Make it "kick" at the start of the beat
-        const pulse = 1 - Math.pow(beatFraction, 3); // 1.0 -> 0.0 over the beat
+        const pulse = 1 - Math.pow(beatFraction, 3);
 
-        const radius = 50 + (pulse * 20);
+        const radius = 20 + (pulse * 5); // Smaller radius for low res
 
         this.ctx.beginPath();
         this.ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-        this.ctx.fillStyle = `rgba(255, 0, 85, ${0.5 + pulse * 0.5})`;
+        this.ctx.fillStyle = `rgba(255, 0, 85, ${0.3 + pulse * 0.5})`;
         this.ctx.fill();
         this.ctx.closePath();
 
         // Draw Beat Counter
         this.ctx.fillStyle = 'white';
-        this.ctx.font = '30px Outfit';
+        // Use generic monospace as fallback or pixel font
+        this.ctx.font = '10px "Press Start 2P", monospace';
         this.ctx.textAlign = 'center';
-        this.ctx.fillText(`BEAT: ${Math.floor(conductor.currentBeat)}`, centerX, centerY - 100);
-        this.ctx.fillText(`BPM: ${conductor.bpm}`, centerX, centerY - 140);
+        this.ctx.fillText(`BEAT:${Math.floor(conductor.currentBeat)}`, centerX, centerY - 50);
     }
 }
 

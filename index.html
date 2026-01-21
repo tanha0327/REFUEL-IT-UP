@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -8,13 +9,14 @@
     <!-- Google Fonts for Premium Look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
     <div id="game-container">
         <canvas id="gameCanvas"></canvas>
-        
+
         <!-- UI Overlay Layer -->
         <div id="ui-layer">
             <div id="start-screen" class="screen active">
@@ -33,8 +35,8 @@
                     <span class="label">COMBO</span>
                 </div>
             </div>
-            
-             <div id="result-screen" class="screen hidden">
+
+            <div id="result-screen" class="screen hidden">
                 <h2>RESULTS</h2>
                 <div id="final-score">0</div>
                 <button id="retry-btn">RETRY</button>
@@ -44,4 +46,5 @@
 
     <script src="game.js"></script>
 </body>
+
 </html>
