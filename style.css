@@ -99,12 +99,14 @@ canvas {
 
 /* Title Screen */
 .title {
-    font-size: 2rem;
+    font-size: 1.5rem;
+    /* Reduced from 2rem */
     line-height: 1.2;
     text-align: center;
     color: white;
     text-shadow: 4px 4px 0px var(--primary-color);
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    /* Reduced margin */
 }
 
 .title .highlight {
@@ -177,11 +179,13 @@ button {
     background: var(--primary-color);
     border: 4px solid white;
     box-shadow: 4px 4px 0px black;
-    padding: 15px 30px;
-    font-size: 1rem;
+    padding: 10px 20px;
+    /* Reduced from 15px 30px */
+    font-size: 0.8rem;
+    /* Reduced from 1rem */
     color: white;
     font-family: var(--font-main);
-    margin-top: 20px;
+    margin-top: 10px;
     cursor: pointer;
 }
 
