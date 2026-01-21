@@ -1,6 +1,6 @@
 /**
  * REFUEL IT UP - Main Game Logic
- * Ver01.21.23.46.01w
+ * Ver01.21.23.49.14w
  */
 
 // --- Constants & Config ---
@@ -12,7 +12,12 @@ const CONFIG = {
     INPUT_TOLERANCE: 0.15, // beats (Tolerance for "Perfect" timing)
 };
 
-// ... (Previous Constants)
+const STATE = {
+    TITLE: 'TITLE',
+    PLAYING: 'PLAYING',
+    GAME_OVER: 'GAME_OVER',
+    SHOP: 'SHOP'
+};
 
 // --- Vehicle Configs ---
 const VEHICLE_TYPES = {
