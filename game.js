@@ -1,6 +1,6 @@
 /**
  * REFUEL IT UP - Main Game Logic
- * Ver01.22.08.53.08J
+ * Ver01.21.23.49.14w
  */
 
 // --- Constants & Config ---
@@ -48,11 +48,7 @@ class Vehicle {
     */
 
     update(currentBeat) {
-        if (this.state === 'APPROACHING') {
-            if (currentBeat >= this.spawnBeat) {
-                this.state = 'ARRIVED';
-            }
-        }
+        // Logic handled by Manager for now
     }
 }
 
@@ -65,18 +61,15 @@ class VehicleManager {
     }
 
     update(beat) {
-        // Spawn logic: Faster now (every 4 beats)
+        // Spawn logic: Simple interval for now
         if (beat >= this.nextSpawnBeat - 4) { // Spawn 4 beats ahead visually
             // Check if we already spawned for this beat
             const alreadySpawned = this.vehicles.some(v => v.spawnBeat === this.nextSpawnBeat);
             if (!alreadySpawned) {
                 this.spawnVehicle(this.nextSpawnBeat);
-                this.nextSpawnBeat += 4; // reduced from 8 for more action
+                this.nextSpawnBeat += 8; // Every 8 beats for testing
             }
         }
-
-        // Update all vehicles
-        this.vehicles.forEach(v => v.update(beat));
 
         // Cleanup
         this.vehicles = this.vehicles.filter(v => v.state !== 'DONE');
