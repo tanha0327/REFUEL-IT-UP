@@ -1,6 +1,6 @@
 /**
  * REFUEL IT UP - Main Game Logic
- * Ver01.24.18.37.21s
+ * Ver01.24.22.08.10s
  */
 
 // --- Constants & Config ---
@@ -309,7 +309,7 @@ class Renderer {
         // Draw Car
         this.ctx.fillStyle = vehicle.type.color;
         this.ctx.beginPath();
-        this.ctx.roundRect(x - 50, centerY - 30, 100, 60, 10);
+        this.drawRoundedRect(x - 50, centerY - 30, 100, 60, 10);
         this.ctx.fill();
 
         // Text
@@ -353,6 +353,19 @@ class Renderer {
         this.ctx.font = '10px "Press Start 2P", monospace';
         this.ctx.textAlign = 'center';
         this.ctx.fillText(`BEAT:${Math.floor(conductor.currentBeat)}`, centerX, centerY - 50);
+    }
+
+    // Polyfill for roundRect (some mobile browsers crash on it)
+    drawRoundedRect(x, y, w, h, r) {
+        if (this.ctx.roundRect) {
+            this.ctx.roundRect(x, y, w, h, r);
+        } else {
+            this.ctx.moveTo(x + r, y);
+            this.ctx.arcTo(x + w, y, x + w, y + h, r);
+            this.ctx.arcTo(x + w, y + h, x, y + h, r);
+            this.ctx.arcTo(x, y + h, x, y, r);
+            this.ctx.arcTo(x, y, x + w, y, r);
+        }
     }
 }
 
@@ -405,8 +418,14 @@ class Game {
 
         // Audio Start
         this.conductor.start().then(() => {
-            this.conductor.playStartupSequence();
-            console.log("Audio Context Ready & Playing Startup Sound");
+            try {
+                this.conductor.playStartupSequence();
+                console.log("Audio Context Ready & Playing Startup Sound");
+            } catch (e) {
+                console.warn("Could not play startup sound:", e);
+            }
+        }).catch(e => {
+            console.error("Audio Context Failed to Start:", e);
         });
     }
 
