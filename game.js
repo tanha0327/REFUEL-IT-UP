@@ -1,6 +1,6 @@
 /**
  * REFUEL IT UP - Main Game Logic
- * Ver01.24.22.08.10s
+ * Ver01.24.22.12.01s (Mobile First)
  */
 
 // --- Constants & Config ---
@@ -193,11 +193,13 @@ class InputHandler {
         this.handleEnd = this.handleEnd.bind(this);
 
         // Attach listeners to the whole document for now
-        document.addEventListener('mousedown', this.handleStart);
+        // Priority to Touch Events for Mobile Response
         document.addEventListener('touchstart', this.handleStart, { passive: false });
-
-        document.addEventListener('mouseup', this.handleEnd);
         document.addEventListener('touchend', this.handleEnd);
+
+        // Mouse Fallback (only if not handled by touch)
+        document.addEventListener('mousedown', this.handleStart);
+        document.addEventListener('mouseup', this.handleEnd);
     }
 
     handleStart(e) {

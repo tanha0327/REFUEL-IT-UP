@@ -44,16 +44,12 @@ body {
     image-rendering: crisp-edges;
 }
 
-/* Desktop Constraint */
-@media (min-width: 600px) {
-    #game-container {
-        max-width: 45vh;
-        /* Constrain width based on height to keep phone shape */
-        aspect-ratio: 9/16;
-        border-radius: 4px;
-        /* Slight rounded corners */
-        border: 4px solid #333;
-    }
+/* Mobile First - No Desktop Constraints for now to ensure fullscreen */
+#game-container {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 0;
 }
 
 canvas {
