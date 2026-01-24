@@ -1,6 +1,6 @@
 /**
  * REFUEL IT UP - Main Game Logic
- * Ver01.24.22.14.05s (Modern HD)
+ * Ver01.24.22.16.30s (Micro Cars)
  */
 
 // --- Constants & Config ---
@@ -306,24 +306,24 @@ class Renderer {
 
         const x = centerX + offsetX;
 
-        // Draw Car (Smaller, HD)
+        // Draw Car (Micro, HD)
         this.ctx.fillStyle = vehicle.type.color;
         this.ctx.beginPath();
-        // Width: 60, Height: 40 (Smaller than previous 100x60 relative to screen)
-        this.drawRoundedRect(x - 30, centerY - 20, 60, 40, 8);
+        // Width: 30, Height: 20 (Drastically smaller)
+        this.drawRoundedRect(x - 15, centerY - 10, 30, 20, 5);
         this.ctx.fill();
 
         // Text
         this.ctx.fillStyle = 'white';
-        this.ctx.font = '600 12px Outfit';
+        this.ctx.font = '700 8px Outfit';
         this.ctx.textAlign = 'center';
-        this.ctx.fillText(vehicle.type.name, x, centerY + 5);
+        this.ctx.fillText(vehicle.type.name, x, centerY - 15);
 
         // Filling Bar
         if (vehicle.state === 'FILLING') {
             const progress = (beat - vehicle.fillStartTime) / vehicle.type.beatsToFill;
             this.ctx.fillStyle = 'white';
-            this.ctx.fillRect(x - 40, centerY - 40, 80 * Math.min(progress, 1), 5);
+            this.ctx.fillRect(x - 15, centerY - 15, 30 * Math.min(progress, 1), 3);
         }
     }
 
