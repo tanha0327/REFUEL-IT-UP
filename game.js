@@ -1,11 +1,11 @@
 /**
  * REFUEL IT UP - Main Game Logic
- * Ver01.21.23.49.14w
+ * Ver01.24.18.37.21s
  */
 
 // --- Constants & Config ---
 const CONFIG = {
-    BPM: 120, // Default BPM
+    BPM: 100, // Default BPM
     FPS: 60,
     LOOKAHEAD: 25.0, // ms
     SCHEDULE_AHEAD_TIME: 0.1, // seconds
@@ -128,6 +128,39 @@ class Conductor {
 
         // Metronome / Music would start here
         console.log("Conductor Started at BPM: " + this.bpm);
+    }
+
+    playTone(freq, time, duration) {
+        if (!this.audioContext) return;
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+
+        oscillator.type = 'triangle';
+        oscillator.frequency.value = freq;
+
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+
+        oscillator.start(time);
+        
+        // Envelope
+        gainNode.gain.setValueAtTime(0, time);
+        gainNode.gain.linearRampToValueAtTime(0.3, time + 0.02);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, time + duration);
+
+        oscillator.stop(time + duration + 0.1);
+    }
+
+    playStartupSequence() {
+        if (!this.audioContext) return;
+        const now = this.audioContext.currentTime;
+        // C5, E5, G5, C6 "Pi-Po-Po-Po"
+        const notes = [523.25, 659.25, 783.99, 1046.50]; 
+        const step = 0.12; // Fast sequence
+
+        notes.forEach((freq, i) => {
+            this.playTone(freq, now + (i * step), 0.2);
+        });
     }
 
     stop() {
@@ -372,6 +405,7 @@ class Game {
 
         // Audio Start
         this.conductor.start();
+        this.conductor.playStartupSequence();
     }
 
     handleInput(type) {
