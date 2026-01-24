@@ -15,6 +15,21 @@ const TYPES = {
     ELECTRIC: { color: '#9c27b0' }
 };
 
+// Polyfill helper
+function drawRoundedRect(ctx, x, y, w, h, r) {
+    if (ctx.roundRect) {
+        ctx.roundRect(x, y, w, h, r);
+    } else {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + h, r);
+        ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+        ctx.closePath();
+    }
+}
+
 export default function GameCanvas({ gameState, selectedFuel, onScore }) {
     const canvasRef = useRef(null);
     const fuelRef = useRef(selectedFuel);
@@ -121,8 +136,10 @@ export default function GameCanvas({ gameState, selectedFuel, onScore }) {
                 ctx.shadowColor = TYPES[v.type].color;
                 ctx.beginPath();
 
+                ctx.beginPath();
+
                 // Micro Car Size (Taiko Note style)
-                ctx.roundRect(x - 20, h * 0.5 - 15, 40, 30, 8);
+                drawRoundedRect(ctx, x - 20, h * 0.5 - 15, 40, 30, 8);
                 ctx.fill();
                 ctx.shadowBlur = 0;
 
