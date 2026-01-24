@@ -1,0 +1,56 @@
+#app {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.title-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  backdrop-filter: blur(5px);
+}
+
+h1 {
+  font-size: 4rem;
+  font-weight: 900;
+  background: linear-gradient(45deg, #FF0055, #00E5FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1.5rem;
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.5;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.hud-score {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 2rem;
+  font-weight: 700;
+  z-index: 50;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}

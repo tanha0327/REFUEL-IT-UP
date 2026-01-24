@@ -1,0 +1,36 @@
+:root {
+  --primary: #FF0055;
+  --accent: #00E5FF;
+  --bg: #1a1a2e;
+  --font-main: 'Outfit', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  /* Prevent scroll/zoom globally */
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  /* Fallback */
+  height: 100dvh;
+  /* Mobile dynamic height */
+  background: var(--bg);
+  color: white;
+  font-family: var(--font-main);
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
