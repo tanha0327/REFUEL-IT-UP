@@ -1,6 +1,6 @@
 /**
  * REFUEL IT UP - Main Game Logic
- * Ver01.24.22.12.01s (Mobile First)
+ * Ver01.24.22.14.05s (Modern HD)
  */
 
 // --- Constants & Config ---
@@ -236,25 +236,23 @@ class Renderer {
     }
 
     resize() {
-        // Internal "Virtual" Resolution for Pixel Art
-        this.virtualWidth = 180;
-        this.virtualHeight = 320;
-
-        // Helper to center the content if aspect ratio differs
+        // High-DPI / Retina Resolution
         const container = this.canvas.parentElement;
         const width = container.clientWidth;
         const height = container.clientHeight;
+        const dpr = window.devicePixelRatio || 1;
 
-        // We set the canvas INTENAL resolution to low-res
-        this.canvas.width = this.virtualWidth;
-        this.canvas.height = this.virtualHeight;
+        this.canvas.width = width * dpr;
+        this.canvas.height = height * dpr;
 
-        // The CSS will scale it up. 
-        // We don't need to scale context because we want to draw in low-res coordinates (0-180, 0-320)
-        this.width = this.virtualWidth;
-        this.height = this.virtualHeight;
+        this.width = width;
+        this.height = height;
 
-        this.ctx.imageSmoothingEnabled = false; // Critical for pixel art
+        this.ctx.scale(dpr, dpr);
+
+        // Logical Reference (100 is 100px on screen)
+        // No more pixel art scaling
+        this.ctx.imageSmoothingEnabled = true; // HD
     }
 
     clear() {
@@ -283,10 +281,10 @@ class Renderer {
 
         // Draw Pump Station
         this.ctx.fillStyle = '#444';
-        this.ctx.fillRect(centerX - 60, this.height / 2 - 60, 120, 120);
+        this.drawRoundedRect(centerX - 80, this.height / 2 - 80, 160, 160, 20);
         this.ctx.fillStyle = '#FF0055';
-        this.ctx.font = '20px Outfit';
-        this.ctx.fillText("PUMP", centerX, this.height / 2 - 70);
+        this.ctx.font = '700 30px Outfit';
+        this.ctx.fillText("PUMP", centerX, this.height / 2 - 90);
     }
 
     drawVehicle(vehicle, conductor) {
@@ -308,17 +306,18 @@ class Renderer {
 
         const x = centerX + offsetX;
 
-        // Draw Car
+        // Draw Car (Smaller, HD)
         this.ctx.fillStyle = vehicle.type.color;
         this.ctx.beginPath();
-        this.drawRoundedRect(x - 50, centerY - 30, 100, 60, 10);
+        // Width: 60, Height: 40 (Smaller than previous 100x60 relative to screen)
+        this.drawRoundedRect(x - 30, centerY - 20, 60, 40, 8);
         this.ctx.fill();
 
         // Text
-        this.ctx.fillStyle = 'black';
-        this.ctx.font = '14px Outfit';
+        this.ctx.fillStyle = 'white';
+        this.ctx.font = '600 12px Outfit';
         this.ctx.textAlign = 'center';
-        this.ctx.fillText(vehicle.type.name, x, centerY);
+        this.ctx.fillText(vehicle.type.name, x, centerY + 5);
 
         // Filling Bar
         if (vehicle.state === 'FILLING') {
@@ -352,9 +351,9 @@ class Renderer {
         // Draw Beat Counter
         this.ctx.fillStyle = 'white';
         // Use generic monospace as fallback or pixel font
-        this.ctx.font = '10px "Press Start 2P", monospace';
+        this.ctx.font = '700 14px Outfit';
         this.ctx.textAlign = 'center';
-        this.ctx.fillText(`BEAT:${Math.floor(conductor.currentBeat)}`, centerX, centerY - 50);
+        this.ctx.fillText(`BEAT:${Math.floor(conductor.currentBeat)}`, centerX, centerY - 100);
     }
 
     // Polyfill for roundRect (some mobile browsers crash on it)

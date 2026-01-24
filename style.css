@@ -2,7 +2,7 @@
     --primary-color: #FF0055;
     --accent-color: #00E5FF;
     --bg-color: #1a1a2e;
-    --font-main: 'Press Start 2P', cursive;
+    --font-main: 'Outfit', sans-serif;
 }
 
 * {
@@ -39,9 +39,8 @@ body {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     overflow: hidden;
 
-    /* Pixel Art Scaling */
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
+    /* Modern Rendering */
+    /* image-rendering: pixelated; REMOVED */
 }
 
 /* Mobile First - No Desktop Constraints for now to ensure fullscreen */
@@ -56,8 +55,7 @@ canvas {
     display: block;
     width: 100%;
     height: 100%;
-    /* Ensure canvas itself is pixelated */
-    image-rendering: pixelated;
+    /* Ensure canvas is smooth */
 }
 
 #ui-layer {
@@ -78,8 +76,7 @@ canvas {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: opacity 0.2s steps(4);
-    /* Stepped transition for retro feel */
+    transition: opacity 0.2s ease-out;
     pointer-events: auto;
 }
 
@@ -98,14 +95,15 @@ canvas {
     line-height: 1.2;
     text-align: center;
     color: white;
-    text-shadow: 4px 4px 0px var(--primary-color);
+    text-shadow: 0 4px 10px rgba(255, 0, 85, 0.5);
     margin-bottom: 2rem;
+    font-weight: 700;
 }
 
 .title .highlight {
     color: var(--accent-color);
     font-size: 2.5rem;
-    text-shadow: 4px 4px 0px #005f99;
+    text-shadow: 0 0 20px rgba(0, 229, 255, 0.6);
 }
 
 .subtitle {
@@ -134,7 +132,7 @@ canvas {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-shadow: 2px 2px 0 #000;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .label {
@@ -170,17 +168,19 @@ canvas {
 /* Button Styling */
 button {
     background: var(--primary-color);
-    border: 4px solid white;
-    box-shadow: 4px 4px 0px black;
-    padding: 15px 30px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4);
+    padding: 15px 40px;
     font-size: 1rem;
     color: white;
     font-family: var(--font-main);
     margin-top: 20px;
     cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 button:active {
-    transform: translate(4px, 4px);
-    box-shadow: none;
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(255, 0, 85, 0.3);
 }
