@@ -19,8 +19,7 @@ body {
     background-color: var(--bg-color);
     font-family: var(--font-main);
     overflow: hidden;
-    height: 100vh;
-    height: 100dvh;
+    height: 100%;
     /* Mobile viewport fix */
     display: flex;
     justify-content: center;

@@ -115,10 +115,10 @@ class Conductor {
         console.log("AudioContext Initialized");
     }
 
-    start() {
+    async start() {
         if (!this.audioContext) this.init();
         if (this.audioContext.state === 'suspended') {
-            this.audioContext.resume();
+            await this.audioContext.resume();
         }
 
         this.isRunning = true;
@@ -142,7 +142,7 @@ class Conductor {
         gainNode.connect(this.audioContext.destination);
 
         oscillator.start(time);
-        
+
         // Envelope
         gainNode.gain.setValueAtTime(0, time);
         gainNode.gain.linearRampToValueAtTime(0.3, time + 0.02);
@@ -155,7 +155,7 @@ class Conductor {
         if (!this.audioContext) return;
         const now = this.audioContext.currentTime;
         // C5, E5, G5, C6 "Pi-Po-Po-Po"
-        const notes = [523.25, 659.25, 783.99, 1046.50]; 
+        const notes = [523.25, 659.25, 783.99, 1046.50];
         const step = 0.12; // Fast sequence
 
         notes.forEach((freq, i) => {
@@ -404,8 +404,10 @@ class Game {
         this.ui.hud.classList.add('active');
 
         // Audio Start
-        this.conductor.start();
-        this.conductor.playStartupSequence();
+        this.conductor.start().then(() => {
+            this.conductor.playStartupSequence();
+            console.log("Audio Context Ready & Playing Startup Sound");
+        });
     }
 
     handleInput(type) {
