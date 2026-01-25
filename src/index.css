@@ -22,6 +22,7 @@ body {
   /* Fallback */
   height: 100dvh;
   /* Mobile dynamic height */
+  background-color: #1a1a2e;
   background: var(--bg);
   color: white;
   font-family: var(--font-main);
