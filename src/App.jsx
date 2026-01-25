@@ -18,7 +18,7 @@ function App() {
         <div className="title-screen" onTouchStart={startGame} onClick={startGame}>
           <h1>REFUEL IT UP</h1>
           <p>TAP TO START</p>
-          <p style={{ fontSize: '12px', marginTop: '20px', opacity: 0.7 }}>Ver01.25.22.21.38S</p>
+          <p style={{ fontSize: '12px', marginTop: '20px', opacity: 0.7 }}>Ver01.25.22.27.05S</p>
         </div>
       )}
 
