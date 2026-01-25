@@ -50,10 +50,40 @@ export default function GameCanvas({ gameState, selectedFuel, onScore }) {
         const ctx = canvas.getContext('2d');
         let animationFrame;
 
+        const drawStatic = (ctx, w, h) => {
+            ctx.clearRect(0, 0, w, h);
+
+            // Draw Lane
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.fillRect(0, h * 0.4, w, h * 0.2);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, h * 0.5);
+            ctx.lineTo(w, h * 0.5);
+            ctx.stroke();
+
+            // Draw Hit Zone (Left)
+            ctx.beginPath();
+            ctx.arc(CONFIG.HIT_X, h * 0.5, 40, 0, Math.PI * 2);
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+            ctx.font = '700 12px Outfit';
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.fillText("PUMP", CONFIG.HIT_X, h * 0.5 + 4);
+        };
+
         const resize = () => {
-            canvas.width = window.innerWidth * window.devicePixelRatio;
-            canvas.height = window.innerHeight * window.devicePixelRatio;
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            canvas.width = w * window.devicePixelRatio;
+            canvas.height = h * window.devicePixelRatio;
             ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+            // Initial draw
+            drawStatic(ctx, w, h);
         };
         window.addEventListener('resize', resize);
         resize();
@@ -96,28 +126,8 @@ export default function GameCanvas({ gameState, selectedFuel, onScore }) {
         const draw = (ctx, beat) => {
             const w = window.innerWidth;
             const h = window.innerHeight;
-            ctx.clearRect(0, 0, w, h);
 
-            // Draw Lane
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-            ctx.fillRect(0, h * 0.4, w, h * 0.2);
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(0, h * 0.5);
-            ctx.lineTo(w, h * 0.5);
-            ctx.stroke();
-
-            // Draw Hit Zone (Left)
-            ctx.beginPath();
-            ctx.arc(CONFIG.HIT_X, h * 0.5, 40, 0, Math.PI * 2);
-            ctx.strokeStyle = 'white';
-            ctx.lineWidth = 4;
-            ctx.stroke();
-            ctx.font = '700 12px Outfit';
-            ctx.fillStyle = 'white';
-            ctx.textAlign = 'center';
-            ctx.fillText("PUMP", CONFIG.HIT_X, h * 0.5 + 4);
+            drawStatic(ctx, w, h);
 
             // Draw Vehicles
             const state = gameRef.current;
@@ -134,8 +144,6 @@ export default function GameCanvas({ gameState, selectedFuel, onScore }) {
                 ctx.fillStyle = TYPES[v.type].color;
                 ctx.shadowBlur = 10;
                 ctx.shadowColor = TYPES[v.type].color;
-                ctx.beginPath();
-
                 ctx.beginPath();
 
                 // Micro Car Size (Taiko Note style)
