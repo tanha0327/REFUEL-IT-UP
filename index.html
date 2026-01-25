@@ -13,6 +13,18 @@
 </head>
 
 <body style="background-color: #1a1a2e; margin: 0;">
+  <div id="debug-overlay"
+    style="position:fixed;top:0;left:0;width:100%;z-index:9999;color:lime;background:rgba(0,0,0,0.8);pointer-events:none;white-space:pre-wrap;font-family:monospace;font-size:12px;">
+  </div>
+  <script>
+    window.onerror = function (msg, url, line, col, error) {
+      document.getElementById('debug-overlay').innerText += `ERROR: ${msg}\nAt: ${url}:${line}:${col}\nstack: ${error?.stack}\n\n`;
+      return false;
+    };
+    window.addEventListener('unhandledrejection', function (event) {
+      document.getElementById('debug-overlay').innerText += `PROMISE ERROR: ${event.reason}\n\n`;
+    });
+  </script>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
