@@ -13,12 +13,23 @@ function App() {
   };
 
   return (
-    <div id="app">
+    <div id="app" style={{
+      width: '100vw',
+      height: '100dvh',
+      position: 'relative',
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, zIndex: 9999, color: 'yellow', pointerEvents: 'none' }}>
+        React Rendered
+      </div>
+
       {gameState === 'TITLE' && (
         <div className="title-screen" onTouchStart={startGame} onClick={startGame}>
           <h1>REFUEL IT UP</h1>
           <p>TAP TO START</p>
-          <p style={{ fontSize: '12px', marginTop: '20px', opacity: 0.7 }}>Ver01.25.22.27.05S</p>
+          <p style={{ fontSize: '12px', marginTop: '20px', opacity: 0.7 }}>Ver01.25.22.30.50S</p>
         </div>
       )}
 
